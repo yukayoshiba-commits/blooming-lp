@@ -3,3 +3,8 @@
 server.js
 dist/
 .wrangler/
+
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
