@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blooming ── ときめく私になる場所</title>
+<meta name="description" content="30代から、ときめきを取り戻す女性のためのコミュニティ「Blooming」。仲間と行くおしゃれな場所、シェアする好きなもの。初回モニター募集中。">
+
+<!-- ===== Google Fonts ===== -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* =========================================================
+   Blooming LP  ──  初心者向けメモ
+   ・色を変えたい時は、下の :root の値だけ書き換えればOK
+   ・申込ボタンのリンク先は href="#" の # を後でURLに変える
+   ========================================================= */
+
+:root{
+  /* ブランドカラー（ここを変えると全体の色が変わります） */
+  --rose:        #BC4B66;   /* メインのローズ */
+  --rose-deep:   #9E3B54;   /* 濃いローズ（文字など） */
+  --rose-soft:   #E8A6B5;   /* やわらかいローズ */
+  --cta:         #C0405E;   /* CTAボタンの色（一番目立たせる） */
+  --cta-hover:   #A8334F;
+  --cream:       #FDF8F4;   /* 背景のクリーム */
+  --blush:       #FAEDE9;   /* セクション背景の淡いピンク */
+  --gold:        #C9A24B;   /* アクセントのゴールド */
+  --ink:         #3D2B2E;   /* 本文の文字色 */
+  --ink-soft:    #6B5458;   /* 補足の文字色 */
+  --border:      #EAD9D2;
+  --white:       #FFFFFF;
+
+  --radius:      18px;
+  --shadow:      0 8px 28px rgba(120, 60, 70, 0.10);
+  --shadow-sm:   0 4px 14px rgba(120, 60, 70, 0.08);
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+
+html{ scroll-behavior:smooth; }
+
+body{
+  font-family:'Noto Sans JP', sans-serif;
+  color:var(--ink);
+  background:var(--cream);
+  line-height:1.85;
+  font-size:16px;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+img{ max-width:100%; display:block; }
+
+h1,h2,h3{
+  font-family:'Shippori Mincho', serif;
+  line-height:1.5;
+  font-weight:600;
+}
+
+/* 英字ロゴ・飾り文字 */
+.script{
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic;
+  font-weight:600;
+  letter-spacing:.02em;
+}
+
+/* ---- 共通レイアウト ---- */
+.wrap{ width:100%; max-width:680px; margin:0 auto; padding:0 22px; }
+
+section{ padding:64px 0; }
+
+.section-head{
+  text-align:center;
+  margin-bottom:36px;
+}
+.section-head .label{
+  display:inline-block;
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic;
+  font-size:1.05rem;
+  color:var(--rose);
+  letter-spacing:.08em;
+  margin-bottom:6px;
+}
+.section-head h2{
+  font-size:1.65rem;
+  color:var(--rose-deep);
+}
+.section-head h2 .deco{
+  display:block;
+  width:48px; height:2px;
+  background:var(--gold);
+  margin:16px auto 0;
+}
+
+/* =========================================================
+   CTA ボタン（一番目立つ要素）
+   ========================================================= */
+.cta-btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  width:100%;
+  max-width:420px;
+  margin:0 auto;
+  padding:18px 28px;
+  background:var(--cta);
+  color:var(--white);
+  font-size:1.12rem;
+  font-weight:700;
+  text-decoration:none;
+  border-radius:999px;
+  box-shadow:0 10px 24px rgba(192, 64, 94, 0.35);
+  transition:transform .2s ease, background .2s ease, box-shadow .2s ease;
+  cursor:pointer;
+}
+.cta-btn:hover{
+  background:var(--cta-hover);
+  transform:translateY(-2px);
+  box-shadow:0 14px 30px rgba(192, 64, 94, 0.42);
+}
+.cta-btn .arrow{ transition:transform .2s ease; }
+.cta-btn:hover .arrow{ transform:translateX(4px); }
+.cta-note{
+  text-align:center;
+  font-size:.82rem;
+  color:var(--ink-soft);
+  margin-top:12px;
+}
+
+/* =========================================================
+   1. ファーストビュー（スライドショー）
+   ========================================================= */
+.hero{
+  position:relative;
+  min-height:88svh;
+  min-height:88vh;
+  display:flex;
+  align-items:flex-end;
+  overflow:hidden;
+}
+/* スライド背景 */
+.hero-slides{
+  position:absolute;
+  inset:0;
+  z-index:0;
+}
+.hero-slide{
+  position:absolute;
+  inset:0;
+  background-size:cover;
+  background-position:center;
+  opacity:0;
+  transition:opacity 1.4s ease;
+}
+.hero-slide.active{ opacity:1; }
+/* 暗めオーバーレイ（文字を読みやすく） */
+.hero-overlay{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  background:linear-gradient(
+    to top,
+    rgba(0,0,0,.62) 0%,
+    rgba(0,0,0,.28) 55%,
+    rgba(0,0,0,.10) 100%
+  );
+}
+/* テキスト＆CTAエリア */
+.hero-content{
+  position:relative;
+  z-index:2;
+  width:100%;
+  padding:0 0 54px;
+  text-align:center;
+}
+/* 手書きキャッチコピー（左上に配置・白く着色） */
+.hero-catch-img{
+  position:absolute;
+  top:28px;
+  left:20px;
+  z-index:2;
+  width:72%;
+  max-width:430px;
+  height:auto;
+  /* 薄いグレーの線画 → 白に着色＋影で読みやすく */
+  filter:brightness(0) invert(1)
+         drop-shadow(0 2px 6px rgba(0,0,0,.5));
+}
+.hero-sub{
+  font-size:.97rem;
+  color:rgba(255,255,255,.9);
+  margin-bottom:30px;
+  line-height:1.9;
+  text-shadow:0 1px 8px rgba(0,0,0,.3);
+}
+/* Bloomingテキスト（1文字ずつ出現） */
+.hero-blooming{
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic;
+  font-size:2.8rem;
+  color:#fff;
+  letter-spacing:.06em;
+  margin-bottom:12px;
+  text-shadow:0 2px 16px rgba(0,0,0,.4);
+  display:flex;
+  justify-content:center;
+  gap:.02em;
+  white-space:nowrap;
+}
+.hero-blooming .letter{
+  display:inline-block;
+  opacity:0;
+  transform:translateX(-18px);
+  animation:letterIn .5s ease forwards;
+}
+@keyframes letterIn{
+  to{ opacity:1; transform:translateX(0); }
+}
+/* hero内CTAボタン（白地・ローズ文字） */
+.hero .cta-btn{
+  background:var(--white);
+  color:var(--cta);
+  box-shadow:0 8px 24px rgba(0,0,0,.28);
+}
+.hero .cta-btn:hover{
+  background:#FFF5F7;
+  color:var(--cta-hover);
+}
+/* ブランドカードセクション（ヒーロー直下） */
+.brand-section{
+  background:var(--blush);
+  padding:36px 0 42px;
+}
+.brand-card{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:26px 22px;
+  text-align:center;
+}
+.brand-name{
+  font-size:2.1rem;
+  color:var(--rose-deep);
+  margin-bottom:4px;
+}
+.brand-tag{
+  font-size:.95rem;
+  letter-spacing:.04em;
+  color:var(--rose);
+  font-family:'Shippori Mincho', serif;
+  margin-bottom:14px;
+}
+.brand-desc{
+  font-size:.95rem;
+  color:var(--ink-soft);
+}
+
+/* =========================================================
+   2. 悩み・共感
+   ========================================================= */
+.worry{ background:var(--white); }
+.worry-list{
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+.worry-list li{
+  display:flex;
+  align-items:flex-start;
+  gap:14px;
+  background:var(--blush);
+  border-radius:14px;
+  padding:16px 18px;
+  font-size:.97rem;
+}
+.worry-list .check{
+  flex-shrink:0;
+  width:24px; height:24px;
+  margin-top:2px;
+  color:var(--rose);
+}
+.worry-lead{
+  text-align:center;
+  margin-top:30px;
+  font-family:'Shippori Mincho', serif;
+  font-size:1.05rem;
+  color:var(--rose-deep);
+}
+
+/* =========================================================
+   3. 理想の未来（パララクス背景）
+   ========================================================= */
+.future{
+  position:relative;
+  background:
+    url('image/ChatGPT Image 2026年6月6日 14_57_30.png')
+    center center / cover no-repeat fixed;
+}
+/* 背景に半透明ホワイトをかけてコンテンツを読みやすく */
+.future::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(255,255,255,.72);
+  z-index:0;
+}
+.future > *{ position:relative; z-index:1; }
+.future-grid{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  margin-bottom:34px;
+}
+.future-card{
+  background:var(--white);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-sm);
+  overflow:hidden;
+}
+.future-card .now{
+  padding:14px 20px;
+  background:#F3E7E2;
+  color:var(--ink-soft);
+  font-size:.92rem;
+  display:flex; align-items:center; gap:10px;
+}
+.future-card .now .dot{ color:#B49A93; }
+.future-card .after{
+  padding:16px 20px;
+  display:flex; align-items:center; gap:10px;
+  font-size:1.02rem;
+  font-weight:500;
+  color:var(--rose-deep);
+}
+.future-card .after .arrow-ic{ color:var(--rose); flex-shrink:0; }
+.future-img-frame{
+  border-radius:var(--radius);
+  overflow:hidden;
+  box-shadow:var(--shadow);
+}
+.future-img-frame img{ aspect-ratio:3/2; object-fit:cover; width:100%; }
+
+/* =========================================================
+   4. サービス内容
+   ========================================================= */
+.service{ background:var(--cream); }
+.service-card{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-sm);
+  overflow:hidden;
+  margin-bottom:24px;
+}
+.service-media{
+  width:100%;
+  aspect-ratio:16/10;
+  overflow:hidden;
+}
+.service-media img{ width:100%; height:100%; object-fit:cover; }
+.service-text{ padding:22px; }
+.service-no{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic;
+  font-size:1.2rem;
+  color:var(--rose);
+  margin-bottom:6px;
+}
+.service-no .num{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:32px; height:32px;
+  background:var(--blush);
+  border-radius:50%;
+  font-style:normal;
+  font-family:'Shippori Mincho',serif;
+  font-size:1rem;
+  color:var(--rose-deep);
+}
+.service-text h3{
+  font-size:1.2rem;
+  color:var(--rose-deep);
+  margin-bottom:10px;
+}
+.service-text p{ font-size:.95rem; color:var(--ink-soft); }
+.service-text .tag{
+  display:inline-block;
+  margin-top:10px;
+  font-size:.78rem;
+  background:var(--blush);
+  color:var(--rose-deep);
+  padding:4px 12px;
+  border-radius:999px;
+}
+
+/* 生成予定の画像プレースホルダー（手持ち写真が入ったら差し替え） */
+.img-ph{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  width:100%; height:100%;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(232,166,181,.35), transparent 60%),
+    linear-gradient(135deg, #F7E8E3 0%, #F1DAD3 100%);
+  color:var(--rose-deep);
+  text-align:center;
+  padding:18px;
+}
+.img-ph svg{ width:38px; height:38px; opacity:.8; }
+.img-ph span{ font-size:.8rem; font-weight:500; letter-spacing:.02em; }
+
+/* =========================================================
+   5. 選ばれる理由
+   ========================================================= */
+.reason{ background:var(--blush); }
+.reason-list{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  margin-bottom:42px;
+}
+.reason-item{
+  display:flex;
+  gap:16px;
+  background:var(--white);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-sm);
+  padding:20px;
+}
+.reason-item .ic{
+  flex-shrink:0;
+  width:46px; height:46px;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--blush);
+  border-radius:12px;
+  color:var(--rose);
+}
+.reason-item .ic svg{ width:26px; height:26px; }
+.reason-item p{ font-size:.95rem; }
+
+/* 主宰者プロフィール */
+.profile{
+  background:var(--white);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.profile-img{
+  width:100%;
+  aspect-ratio:4/5;
+  max-height:440px;
+  overflow:hidden;
+}
+.profile-img img{ width:100%; height:100%; object-fit:cover; object-position:center 30%; }
+.profile-body{ padding:26px 22px; }
+.profile-role{
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic;
+  color:var(--rose);
+  font-size:1rem;
+}
+.profile-name{
+  font-size:1.5rem;
+  color:var(--rose-deep);
+  margin-bottom:4px;
+}
+.profile-cred{
+  display:inline-block;
+  font-size:.78rem;
+  background:var(--gold);
+  color:var(--white);
+  padding:4px 12px;
+  border-radius:999px;
+  margin-bottom:16px;
+}
+.profile-body p{ font-size:.95rem; color:var(--ink-soft); margin-bottom:12px; }
+.profile-body p:last-child{ margin-bottom:0; }
+
+/* =========================================================
+   6. お客様の声
+   ========================================================= */
+.voice{ background:var(--cream); }
+.voice-card{
+  position:relative;
+  background:var(--white);
+  border:1px dashed var(--rose-soft);
+  border-radius:var(--radius);
+  padding:38px 26px 30px;
+  text-align:center;
+  box-shadow:var(--shadow-sm);
+}
+.voice-badge{
+  position:absolute;
+  top:-14px; left:50%;
+  transform:translateX(-50%);
+  background:var(--rose);
+  color:var(--white);
+  font-size:.8rem;
+  font-weight:700;
+  padding:6px 18px;
+  border-radius:999px;
+  white-space:nowrap;
+}
+.voice-card .quote-ic{ color:var(--rose-soft); width:40px; height:40px; margin:0 auto 12px; }
+.voice-card p{ font-size:.97rem; color:var(--ink-soft); }
+
+/* =========================================================
+   7. 料金・申込
+   ========================================================= */
+.price{ background:var(--blush); }
+.price-card{
+  background:var(--white);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  border:2px solid var(--rose);
+}
+.price-ribbon{
+  background:var(--rose);
+  color:var(--white);
+  text-align:center;
+  padding:14px;
+  font-weight:700;
+  font-size:1.05rem;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.price-body{ padding:30px 24px; text-align:center; }
+.price-old{
+  color:var(--ink-soft);
+  text-decoration:line-through;
+  font-size:.95rem;
+}
+.price-now{
+  font-family:'Shippori Mincho', serif;
+  color:var(--rose-deep);
+  margin:6px 0 4px;
+}
+.price-now .num{ font-size:2.8rem; font-weight:700; }
+.price-now .unit{ font-size:1rem; }
+.price-value{
+  font-size:.95rem;
+  font-weight:700;
+  color:var(--rose-deep);
+  background:linear-gradient(135deg, #FDF0F3, #FAE8EC);
+  border:1.5px solid var(--rose-soft);
+  border-radius:12px;
+  padding:14px 16px;
+  margin:18px 0 10px;
+  line-height:1.7;
+}
+.price-cond{
+  font-size:.88rem;
+  color:var(--ink-soft);
+  background:var(--blush);
+  border-radius:12px;
+  padding:12px 16px;
+  margin:0 0 26px;
+}
+.bonus-title{
+  font-family:'Shippori Mincho', serif;
+  color:var(--rose-deep);
+  font-size:1.1rem;
+  margin-bottom:16px;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.bonus-grid{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  margin-bottom:28px;
+  text-align:left;
+}
+.bonus-item{
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+  background:var(--blush);
+  border-radius:14px;
+  padding:16px;
+}
+.bonus-item .ic{
+  flex-shrink:0;
+  width:44px; height:44px;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--white);
+  border-radius:12px;
+  color:var(--rose);
+  box-shadow:var(--shadow-sm);
+}
+.bonus-item .ic svg{ width:26px; height:26px; }
+.bonus-item h4{
+  font-family:'Shippori Mincho', serif;
+  font-size:1rem;
+  color:var(--rose-deep);
+  margin-bottom:4px;
+}
+.bonus-item p{ font-size:.88rem; color:var(--ink-soft); }
+
+/* =========================================================
+   8. FAQ
+   ========================================================= */
+.faq{ background:var(--cream); }
+.faq-item{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:14px;
+  margin-bottom:12px;
+  overflow:hidden;
+}
+.faq-item summary{
+  list-style:none;
+  cursor:pointer;
+  padding:18px 52px 18px 20px;
+  position:relative;
+  font-weight:500;
+  font-size:.97rem;
+  color:var(--rose-deep);
+  display:flex; gap:10px; align-items:flex-start;
+}
+.faq-item summary::-webkit-details-marker{ display:none; }
+.faq-item summary .q{
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic;
+  color:var(--rose);
+  font-size:1.15rem;
+  flex-shrink:0;
+}
+.faq-item summary::after{
+  content:"";
+  position:absolute;
+  right:20px; top:22px;
+  width:11px; height:11px;
+  border-right:2px solid var(--rose);
+  border-bottom:2px solid var(--rose);
+  transform:rotate(45deg);
+  transition:transform .25s ease;
+}
+.faq-item[open] summary::after{ transform:rotate(-135deg); }
+.faq-answer{
+  padding:0 20px 20px 20px;
+  font-size:.93rem;
+  color:var(--ink-soft);
+  display:flex; gap:10px;
+}
+.faq-answer .a{
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic;
+  color:var(--gold);
+  font-size:1.15rem;
+  flex-shrink:0;
+}
+
+/* =========================================================
+   9. クロージング
+   ========================================================= */
+.closing{
+  position:relative;
+  padding:0;
+  background:var(--rose-deep);
+  color:var(--white);
+}
+.closing-img-frame{
+  position:relative;
+  width:100%;
+  aspect-ratio:3/2;
+  max-height:420px;
+  overflow:hidden;
+}
+.closing-img-frame img{ width:100%; height:100%; object-fit:cover; }
+.closing-img-frame::after{
+  content:"";
+  position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(158,59,84,.15) 0%, rgba(158,59,84,.85) 100%);
+}
+.closing-body{
+  text-align:center;
+  padding:44px 22px 64px;
+  background:var(--rose-deep);
+}
+.closing-body h2{
+  font-size:1.8rem;
+  margin-bottom:14px;
+  color:var(--white);
+}
+.closing-body p{
+  font-size:1.05rem;
+  margin-bottom:30px;
+  color:#FAE8EC;
+}
+.closing .cta-btn{
+  background:var(--white);
+  color:var(--cta);
+  box-shadow:0 10px 24px rgba(0,0,0,.25);
+}
+.closing .cta-btn:hover{ background:#FFF; color:var(--cta-hover); }
+
+/* フッター */
+.footer{
+  background:#2E2022;
+  color:#C9B7BA;
+  text-align:center;
+  padding:30px 22px;
+  font-size:.82rem;
+}
+.footer .fname{
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic;
+  font-size:1.5rem;
+  color:var(--white);
+  margin-bottom:6px;
+}
+
+/* =========================================================
+   PC・タブレット（768px以上で少し余裕を）
+   ========================================================= */
+/* スマホではparallaxをscrollに切り替え（iOSはfixedが効かない） */
+@media (max-width:767px){
+  .future{
+    background-attachment:scroll;
+  }
+}
+/* 極小スマホ（〜374px） */
+@media (max-width:374px){
+  .cta-btn{ font-size:.95rem; padding:16px 18px; }
+  .hero-sub{ font-size:.88rem; }
+  .hero-blooming{ font-size:2.2rem; }
+  .hero-catch-img{ width:80%; }
+}
+@media (min-width:768px){
+  body{ font-size:17px; }
+  .hero{ min-height:75vh; align-items:center; }
+  .hero-catch{ font-size:2.5rem; }
+  .section-head h2{ font-size:2rem; }
+  .closing-img-frame{ aspect-ratio:16/8; }
+  section{ padding:80px 0; }
+}
+
+/* アニメーション控えめ設定を尊重 */
+@media (prefers-reduced-motion:reduce){
+  *{ transition:none !important; scroll-behavior:auto !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     1. ファーストビュー（スライドショー）
+     画像：hero-1.jpg / hero-2.jpg / hero-3.jpg
+     ============================================================ -->
+<header class="hero">
+  <!-- スライド背景 3枚 -->
+  <div class="hero-slides" id="heroSlides">
+    <div class="hero-slide active" style="background-image:url('image/hero-1.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('image/hero-2.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('image/hero-3.jpg')"></div>
+  </div>
+  <!-- 暗めオーバーレイ -->
+  <div class="hero-overlay"></div>
+  <!-- 手書きキャッチコピー（左上） -->
+  <img class="hero-catch-img" src="image/hero-catch.png"
+       alt="素敵な私は、素敵な場所と仲間から生まれる">
+  <!-- コピー＆CTA -->
+  <div class="hero-content">
+    <div class="wrap">
+      <div class="hero-blooming" id="heroText">Blooming</div>
+      <p class="hero-sub">気づけば毎日おんなじ景色。<br>30代になって、ときめきを忘れていませんか？</p>
+      <a href="#" class="cta-btn">
+        まずは話だけ聞いてみる
+        <svg class="arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </div>
+</header>
+
+
+
+<!-- ============================================================
+     2. 悩み・共感（画像なし）
+     ============================================================ -->
+<section class="worry">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>こんなこと、ありませんか？<span class="deco"></span></h2>
+    </div>
+    <ul class="worry-list">
+      <li>
+        <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        <span>おしゃれな場所に行きたいけど、一人では行けない</span>
+      </li>
+      <li>
+        <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        <span>行きたい場所があっても、一緒に行ける人がいない・誘いにくい</span>
+      </li>
+      <li>
+        <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        <span>自分のために時間やお金を使うことに、罪悪感がある</span>
+      </li>
+      <li>
+        <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        <span>気づけば"自分が何を楽しいと感じるか"がわからなくなっていた</span>
+      </li>
+      <li>
+        <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        <span>毎日悪くはないけど、このままでいいのかなとモヤモヤしている</span>
+      </li>
+    </ul>
+    <p class="worry-lead">ひとつでも当てはまったあなたへ。<br>その気持ち、Bloomingが変えていきます。</p>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     3. 理想の未来
+     画像：手持ち（3人がお出かけ）
+     ============================================================ -->
+<section class="future">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Bloomingに入ると、<br>こう変わります<span class="deco"></span></h2>
+    </div>
+
+    <div class="future-grid">
+      <div class="future-card">
+        <div class="now"><span class="dot">●</span>一人では行けない</div>
+        <div class="after">
+          <svg class="arrow-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          「また来週ね」と言える仲間ができる
+        </div>
+      </div>
+      <div class="future-card">
+        <div class="now"><span class="dot">●</span>罪悪感がある</div>
+        <div class="after">
+          <svg class="arrow-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          自分を一番に考えることが心地よくなる
+        </div>
+      </div>
+      <div class="future-card">
+        <div class="now"><span class="dot">●</span>何が楽しいかわからない</div>
+        <div class="after">
+          <svg class="arrow-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          毎日が楽しくなる
+        </div>
+      </div>
+      <div class="future-card">
+        <div class="now"><span class="dot">●</span>モヤモヤしている</div>
+        <div class="after">
+          <svg class="arrow-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          ありのままの自分を好きになれる
+        </div>
+      </div>
+    </div>
+
+    <div class="future-img-frame">
+      <img src="image/ChatGPT Image 2026年6月6日 11_03_14.png"
+           alt="休日に楽しそうにお出かけする女性たち">
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     4. サービス内容
+     ============================================================ -->
+<section class="service">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Bloomingでできること<span class="deco"></span></h2>
+    </div>
+
+    <!-- ① 専用サイト -->
+    <div class="service-card">
+      <div class="service-media">
+        <img src="image/ChatGPT Image 2026年6月6日 11_20_25.png"
+             alt="自宅でスマホを見ながら笑顔の女性">
+      </div>
+      <div class="service-text">
+        <div class="service-no"><span class="num">1</span></div>
+        <h3>専用サイトで毎日つながる</h3>
+        <p>好きなものをシェアして、日常にときめきを散りばめる。一人で抱えていた"好き"が、仲間に届いた瞬間から毎日が変わり始める。</p>
+      </div>
+    </div>
+
+    <!-- ② おしゃれなお出かけ -->
+    <div class="service-card">
+      <div class="service-media">
+        <img src="image/ChatGPT Image 2026年6月6日 11_24_23.png"
+             alt="おしゃれなカフェの内装">
+      </div>
+      <div class="service-text">
+        <div class="service-no"><span class="num">2</span></div>
+        <h3>月1回・おしゃれなお出かけ</h3>
+        <p>一人では踏み出せなかった場所へ、仲間と一緒に行く。非日常が当たり前になると、自分への見方が少しずつ変わっていく。</p>
+      </div>
+    </div>
+
+    <!-- ③ シェア会 -->
+    <div class="service-card">
+      <div class="service-media">
+        <img src="image/ChatGPT Image 2026年6月6日 11_26_18.png"
+             alt="テーブルを囲んで笑顔で話す女性たち">
+      </div>
+      <div class="service-text">
+        <div class="service-no"><span class="num">3</span></div>
+        <h3>メンバー主催のシェア会</h3>
+        <p>「これ好き」を持ち寄って、お互いのときめきを発見し合う。誰かの好きが、自分の新しい好きになる。</p>
+      </div>
+    </div>
+
+    <!-- ④ ショッピングクルーズ -->
+    <div class="service-card">
+      <div class="service-media">
+        <img src="image/ChatGPT Image 2026年6月6日 11_27_35.png"
+             alt="ブティックで服を選ぶ2人の女性">
+      </div>
+      <div class="service-text">
+        <div class="service-no"><span class="num">4</span></div>
+        <h3>ショッピングクルーズ</h3>
+        <p>あなたの好き×似合うを、一緒に探しに行く。プロの目線で選ぶと、鏡の前の自分が好きになる。</p>
+        <span class="tag">月額料金に含まれます／大阪メインで開催</span>
+      </div>
+    </div>
+
+    <a href="#" class="cta-btn" style="margin-top:34px;">
+      気になったら、まず話だけ聞いてみる
+      <svg class="arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     5. 選ばれる理由 ＋ 主宰者プロフィール
+     画像：手持ち（ゆかさんの写真）必須
+     ============================================================ -->
+<section class="reason">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Bloomingが選ばれる理由<span class="deco"></span></h2>
+    </div>
+
+    <div class="reason-list">
+      <div class="reason-item">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg></span>
+        <p>イメージコンサルタント資格を持つ主宰者が、あなたの"似合う"と"ときめき"を一緒に見つけます</p>
+      </div>
+      <div class="reason-item">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 9.2 8.6 2 9.2l5.5 4.7L5.8 21 12 17.3 18.2 21l-1.7-7.1L22 9.2l-7.2-.6Z"/></svg></span>
+        <p>参加するだけでなく、メンバーが自分らしく"主役"になれるコミュニティ</p>
+      </div>
+      <div class="reason-item">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10Z"/></svg></span>
+        <p>全国どこからでも参加できて、自分のペースで楽しめる</p>
+      </div>
+    </div>
+
+    <div class="profile">
+      <div class="profile-img">
+        <img src="image/_99A1427R.JPG" alt="主宰者ゆかの自然な笑顔">
+      </div>
+      <div class="profile-body">
+        <div class="profile-role">Founder</div>
+        <div class="profile-name">主宰者　ゆか</div>
+        <span class="profile-cred">イメージコンサルタント</span>
+        <p>8歳と4歳の子どもを持つ、母でもあります。</p>
+        <p>子どもが生まれてから、気づけば毎日が子ども中心。自分の"好き"がどこかへ消えてしまう感覚、私自身も経験しました。</p>
+        <p>でも、もっと自分中心に人生を楽しんでいい。そう気づいてから、毎日が変わり始めた。同じ気持ちの仲間を作りたくて、Bloomingを始めました。</p>
+        <p>イメージコンサルタントとして、あなたの"似合う"と"ときめき"を一緒に見つけに行きます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     6. お客様の声（現在はモニター募集中／画像なし）
+     ============================================================ -->
+<section class="voice">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>参加した方の声<span class="deco"></span></h2>
+    </div>
+    <div class="voice-card">
+      <span class="voice-badge">🌸 初回モニターメンバー募集中</span>
+      <svg class="quote-ic" viewBox="0 0 24 24" fill="currentColor"><path d="M9.5 5C6.5 5 4 7.5 4 10.5V19h7v-7H7.5c0-1.7 1.3-3 3-3V5Zm10 0c-3 0-5.5 2.5-5.5 5.5V19h7v-7h-3.5c0-1.7 1.3-3 3-3V5Z"/></svg>
+      <p>一緒にBloomingを作っていく、最初の仲間を探しています。<br>モニター期間中のご意見・ご感想は、今後のサービスづくりに活かしていきます。<br>あなたの声が、これからのBloomingになります。</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     7. 料金・申込条件
+     ============================================================ -->
+<section class="price">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>入会について<span class="deco"></span></h2>
+    </div>
+
+    <div class="price-card">
+      <div class="price-ribbon">
+        🌸 初回モニター募集　残り5名
+      </div>
+      <div class="price-body">
+        <p class="price-old">通常 月額 5,000円</p>
+        <p class="price-now"><span class="unit">モニター価格 月額 </span><span class="num">3,500</span><span class="unit">円</span></p>
+        <p style="font-size:.85rem;color:var(--ink-soft);">（税込）</p>
+        <p class="price-cond">入会から3ヶ月間はモニター価格でご参加いただけます。<br>長期の縛りはなく、毎月退会できます。</p>
+
+        <div class="bonus-title">
+          <img src="image/ChatGPT Image 2026年6月6日 11_29_09.png"
+               alt="特典アイコン"
+               style="height:42px;width:auto;">
+          入会特典
+        </div>
+
+        <div class="bonus-grid">
+          <!-- 特典アイコン（生成プロンプト: smartphone with sparkle / two speech bubbles, pastel pink, minimal, no text）をSVGで代用 -->
+          <div class="bonus-item">
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M19 4l.7 1.6L21.3 6l-1.6.7L19 8.3l-.7-1.6L16.7 6l1.6-.7Z" fill="currentColor" stroke="none"/></svg></span>
+            <div>
+              <h4>① 魅力タイプ診断（オンライン）</h4>
+              <p>自分だけの"魅力のタイプ"がわかる、入会者だけの特別診断。</p>
+            </div>
+          </div>
+          <div class="bonus-item">
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7A8.38 8.38 0 0 1 4 11.5 8.5 8.5 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5Z"/></svg></span>
+            <div>
+              <h4>② 主宰者とのウェルカムトーク</h4>
+              <p>入会前にZoomで30分、主宰者と1対1でお話しできます。</p>
+            </div>
+          </div>
+        </div>
+
+        <a href="#" class="cta-btn">
+          まずは話だけ聞いてみる
+          <svg class="arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     8. FAQ（JSなしのアコーディオン）
+     ============================================================ -->
+<section class="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>よくある質問<span class="deco"></span></h2>
+    </div>
+
+    <details class="faq-item">
+      <summary><span class="q">Q.</span>参加者はどんな女性ですか？友達ができるか不安です。</summary>
+      <div class="faq-answer"><span class="a">A.</span><span>30代で"ときめきを取り戻したい"という気持ちを持った女性が集まっています。はじめての方がほとんどなので、一人で参加しても大丈夫です。入会時のウェルカムトークで、まず主宰者と話せるので安心してください。</span></div>
+    </details>
+
+    <details class="faq-item">
+      <summary><span class="q">Q.</span>自分なんかが参加していいのか不安です。</summary>
+      <div class="faq-answer"><span class="a">A.</span><span>おしゃれに詳しくなくても、センスに自信がなくても大丈夫です。"ときめきたい"という気持ちがあれば、それだけで十分です。</span></div>
+    </details>
+
+    <details class="faq-item">
+      <summary><span class="q">Q.</span>オフラインのイベントに毎回参加できなくても大丈夫ですか？</summary>
+      <div class="faq-answer"><span class="a">A.</span><span>参加できるときだけで大丈夫です。専用サイトでの日常交流だけでも、十分楽しめます。</span></div>
+    </details>
+
+    <details class="faq-item">
+      <summary><span class="q">Q.</span>どのエリアの方でも参加できますか？</summary>
+      <div class="faq-answer"><span class="a">A.</span><span>全国どこからでも参加できます。専用サイトでの日常交流やシェア会はオンラインで楽しめます。ショッピングクルーズは大阪メインで開催予定です。</span></div>
+    </details>
+
+    <details class="faq-item">
+      <summary><span class="q">Q.</span>途中で退会できますか？</summary>
+      <div class="faq-answer"><span class="a">A.</span><span>はい、毎月退会可能です。長期の縛りはないので、まずは気軽に試してみてください。</span></div>
+    </details>
+
+    <details class="faq-item">
+      <summary><span class="q">Q.</span>専用サイトでのやり取りは外に漏れませんか？</summary>
+      <div class="faq-answer"><span class="a">A.</span><span>メンバー以外には見えない、クローズドな空間です。安心してシェアしてください。</span></div>
+    </details>
+
+    <details class="faq-item">
+      <summary><span class="q">Q.</span>申し込んだ後、どうなりますか？</summary>
+      <div class="faq-answer"><span class="a">A.</span><span>まずZoomで主宰者と30分お話しします。その後、正式にご入会いただいた方を専用サイトにご招待します。無理なお誘いは一切ありませんので、まずはお気軽にどうぞ。</span></div>
+    </details>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     9. クロージング・CTA
+     画像：ファーストビューと同じ（手持ち）
+     ============================================================ -->
+<section class="closing">
+  <div class="closing-img-frame">
+    <img src="image/ChatGPT Image 2026年6月6日 11_01_24.png"
+         alt="笑顔で語り合う女性たち">
+  </div>
+  <div class="closing-body">
+    <h2>いつか、じゃなくて今日から。</h2>
+    <p>一緒に毎日を楽しみませんか？</p>
+    <a href="#" class="cta-btn">
+      今すぐ申し込む
+      <svg class="arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="fname script">Blooming</div>
+  <p>ときめく私になる場所</p>
+  <p style="margin-top:10px;opacity:.7;">&copy; Blooming</p>
+</footer>
+
+<script>
+/* ===== Bloomingテキスト：1文字ずつ左から出現 ===== */
+(function(){
+  var el=document.getElementById('heroText');
+  if(!el) return;
+  var text=el.textContent.trim();
+  el.textContent='';
+  text.split('').forEach(function(ch,i){
+    var span=document.createElement('span');
+    span.className='letter';
+    span.textContent=ch;
+    span.style.animationDelay=(0.15*i)+'s';
+    el.appendChild(span);
+  });
+})();
+
+/* ===== ヒーロー スライドショー（5秒ごとにふわっと切り替え） ===== */
+(function(){
+  var slides = document.querySelectorAll('#heroSlides .hero-slide');
+  if(!slides.length) return;
+  var current = 0;
+  setInterval(function(){
+    slides[current].classList.remove('active');
+    current = (current + 1) % slides.length;
+    slides[current].classList.add('active');
+  }, 5000);
+})();
+</script>
+</body>
+</html>
